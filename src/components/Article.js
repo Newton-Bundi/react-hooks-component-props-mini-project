@@ -1,17 +1,30 @@
-import React from "react";
-import Article from "./Article";
 
-function ArticleList({ posts }) {
-  const articles = posts.map((post) => (
-    <Article
-      key={post.id}
-      title={post.title}
-      date={post.date}
-      preview={post.preview}
-      minutes={post.minutes}
-    />
-  ));
-  return <main>{articles}</main>;
+import React from "react";
+
+function makeEmojiList(minutes) {
+  const interval = minutes < 30 ? 5 : 10;
+  const emoji = minutes < 30 ? "☕️" : "🍱";
+
+  let emojis = "";
+  for (let i = 0; i < minutes; i += interval) {
+    emojis += emoji;
+  }
+
+  return emojis;
 }
 
-export default ArticleList;
+function Article({ title, date = "January 1, 1970", preview, minutes }) {
+  const emojis = makeEmojiList(minutes);
+
+  return (
+    <article>
+      <h3>{title}</h3>
+      <small>
+        {date} • {emojis} {minutes} min read
+      </small>
+      <p>{preview}</p>
+    </article>
+  );
+}
+
+export default Article;
